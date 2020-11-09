@@ -1,26 +1,30 @@
 import React, {useEffect, useState} from 'react';
+import axios from 'axios';
+import {WIKIPEDIA_API_URL} from "../common/env";
 
 const Search = () => {
 
     const [term, setTerm] = useState('');
 
-    alert("1");
-    console.log("I RUN WITH EVERY RENDER...");
-
     useEffect(() => {
-        console.log("I ONLY RUN ONCE...");
-        alert("2");
-    }, []);
 
-    useEffect(() => {
-        console.log("I RUN AFTER EVERY RENDER AND AT THE INITIAL RENDER");
-        alert("3");
-    });
+        search();
 
-    useEffect(() => {
-        console.log("I RUN AFTER EVERY RENDER IF 'term' CHANGES")
-        alert("4");
     }, [term]);
+
+    // bu api cagirma icin
+    const search = async () => {
+        // url = https://en.wikipedia.org/w/api.php?action=query&list=search&format=json&srsearch=java
+        await axios.get(WIKIPEDIA_API_URL, {
+            params: {
+                action: 'query',
+                list: 'search',
+                origin: '*',
+                format: 'json',
+                srsearch: term
+            }
+        });
+    }
 
     return (
         <div>
