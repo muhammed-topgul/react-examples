@@ -4,7 +4,10 @@ import {WIKIPEDIA_API_URL} from "../common/env";
 
 const Search = () => {
 
-    const [term, setTerm] = useState('');
+    const [term, setTerm] = useState('programming');
+    const [results, setResults] = useState([]);
+
+    console.log(results);
 
     useEffect(() => {
 
@@ -15,7 +18,7 @@ const Search = () => {
     // bu api cagirma icin
     const search = async () => {
         // url = https://en.wikipedia.org/w/api.php?action=query&list=search&format=json&srsearch=java
-        await axios.get(WIKIPEDIA_API_URL, {
+        const {data} = await axios.get(WIKIPEDIA_API_URL, {
             params: {
                 action: 'query',
                 list: 'search',
@@ -24,7 +27,22 @@ const Search = () => {
                 srsearch: term
             }
         });
+
+        setResults(data.query.search);
     }
+
+    const renderedResults = results.map((result) => {
+        return (
+            <div key={result.pageid} className={"item"}>
+                <div className={"content"}>
+                    <div className={"header"}>
+                        {result.title}
+                    </div>
+                    <span dangerouslySetInnerHTML={{__html: result.snippet}}/>
+                </div>
+            </div>
+        )
+    });
 
     return (
         <div>
@@ -37,6 +55,10 @@ const Search = () => {
                         onChange={(event) => setTerm(event.target.value)}
                     />
                 </div>
+            </div>
+
+            <div className={"ui celled list"}>
+                {renderedResults}
             </div>
         </div>
     );
