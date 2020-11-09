@@ -1,6 +1,6 @@
 import React, {useEffect, useState} from 'react';
 import axios from 'axios';
-import {WIKIPEDIA_API_URL} from "../common/env";
+import {WIKIPEDIA_API_URL, WIKIPEDIA_CURRENT_ELEMENT} from "../common/env";
 
 const Search = () => {
 
@@ -11,7 +11,9 @@ const Search = () => {
 
     useEffect(() => {
 
-        search();
+        if (term) {
+            search();
+        }
 
     }, [term]);
 
@@ -34,6 +36,9 @@ const Search = () => {
     const renderedResults = results.map((result) => {
         return (
             <div key={result.pageid} className={"item"}>
+                <div className={"right floated content"}>
+                    <a className={"ui button"} href={`${WIKIPEDIA_CURRENT_ELEMENT} ${result.pageid}`}>Go</a>
+                </div>
                 <div className={"content"}>
                     <div className={"header"}>
                         {result.title}
