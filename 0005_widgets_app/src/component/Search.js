@@ -11,8 +11,24 @@ const Search = () => {
 
     useEffect(() => {
 
-        if (term) {
+        // eger uygulamna ilk kez acılıyorsa timer'a takılma
+        if (term && !results.length) {
             search();
+        } else {
+            // arama cubuguna her harften sonra değil belirli aralıklarla arama yapmasını istiyorum
+            // yani kullanıcı girecek ve 500 ms sonra arama calisacak
+            const timeoutId = setTimeout(() => {
+                if (term) {
+                    search();
+                }
+            }, 1000);
+
+            // eğer girdi olmaya devam ederse timeoutu sil
+            // bu inner method bu ana method her çagırıldığında calisir
+            // yani kullanıcı girdiye devam ederse timer'ı iptal et
+            return () => {
+                clearTimeout(timeoutId);
+            }
         }
 
     }, [term]);
