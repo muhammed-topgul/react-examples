@@ -8,7 +8,7 @@ const Dropdown = ({selected, onSelectedChange, options}) => {
     useEffect(() => {
         // DROPDOWN' u kapat
         // butun sayfaya on click listener ekler
-        document.body.addEventListener("click", (event) => {
+        const onBodyClick = (event) => {
             // eger tiklanan yer dropdown menunun kendisi ise hic bir sey yapma
             if (ref.current && ref.current.contains(event.target)) {
                 return;
@@ -16,7 +16,14 @@ const Dropdown = ({selected, onSelectedChange, options}) => {
 
             // eger ekranın geri kalanına tıklanırsa dropdownu kapat
             setOpen(false);
-        });
+        }
+
+        document.body.addEventListener('click', onBodyClick);
+
+        return () => {
+            document.body.removeEventListener('click', onBodyClick);
+        }
+
     }, []);
 
     const renderedOptions = options.map((option) => {
