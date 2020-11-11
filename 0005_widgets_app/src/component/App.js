@@ -6,6 +6,7 @@ import Search from "./Search";
 import Dropdown from "./Dropdown";
 import Translate from "./Translate";
 import {options} from "../data/langs";
+import Header from "./Header";
 
 export default () => {
 
@@ -13,6 +14,9 @@ export default () => {
 
     return (
         <div>
+
+            <Header/>
+
             <Route path={"/"}>
                 <Accordion items={items}/>
             </Route>
