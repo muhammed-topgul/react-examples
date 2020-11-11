@@ -1,56 +1,48 @@
-import React, {Component} from 'react';
+import React, {Component, useEffect, useState} from 'react';
 import SearchBar from "./SearchBar";
 import youtube from "../service/youtube";
 import VideoList from "./VideoList";
 import VideoDetail from "./VideoDetail";
 
-class App extends Component {
+const App = () => {
 
-    state = {
-        videos: [],
-        selectedVideo: null
-    }
+    const [videos, setVideos] = useState([]);
+    const [selectedVideo, setSelectedVideo] = useState(null);
 
-    callbackSearchSubmit = async (term) => {
+    useEffect(() => {
+        callbackSearchSubmit('React JS Tutorials')
+    }, []);
+
+    const callbackSearchSubmit = async (term) => {
         const response = await youtube.get('/search', {
             params: {
                 q: term
             }
         });
 
-        this.setState({
-            videos: response.data.items,
-            selectedVideo: response.data.items[0]
-        });
+        setVideos(response.data.items);
+        setSelectedVideo(response.data.items[0]);
     }
 
-    callbackVideoSelect = (video) => {
-        this.setState({
-            selectedVideo: video
-        });
+    const callbackVideoSelect = (video) => {
+        setSelectedVideo(video);
     }
 
-    componentDidMount() {
-        this.callbackSearchSubmit('React JS Tutorials')
-    }
-
-    render() {
-        return (
-            <div className={"ui container"}>
-                <SearchBar callbackSearchSubmit={this.callbackSearchSubmit}/>
-                <div className={"ui grid"}>
-                    <div className={"ui row"}>
-                        <div className={"eleven wide column"}>
-                            <VideoDetail selectedVideo={this.state.selectedVideo}/>
-                        </div>
-                        <div className={"five wide column"}>
-                            <VideoList callbackVideoSelect={this.callbackVideoSelect} videos={this.state.videos}/>
-                        </div>
+    return (
+        <div className={"ui container"}>
+            <SearchBar callbackSearchSubmit={callbackSearchSubmit}/>
+            <div className={"ui grid"}>
+                <div className={"ui row"}>
+                    <div className={"eleven wide column"}>
+                        <VideoDetail selectedVideo={selectedVideo}/>
+                    </div>
+                    <div className={"five wide column"}>
+                        <VideoList callbackVideoSelect={callbackVideoSelect} videos={videos}/>
                     </div>
                 </div>
             </div>
-        );
-    }
+        </div>
+    );
 }
 
 export default App;
