@@ -1,6 +1,23 @@
-import React from "react";
+import React, {useEffect, useState, useRef} from "react";
 
 const Dropdown = ({selected, onSelectedChange, options}) => {
+
+    const [open, setOpen] = useState(false);
+    const ref = useRef();
+
+    useEffect(() => {
+        // DROPDOWN' u kapat
+        // butun sayfaya on click listener ekler
+        document.body.addEventListener("click", (event) => {
+            // eger tiklanan yer dropdown menunun kendisi ise hic bir sey yapma
+            if (ref.current && ref.current.contains(event.target)) {
+                return;
+            }
+
+            // eger ekranın geri kalanına tıklanırsa dropdownu kapat
+            setOpen(false);
+        });
+    }, []);
 
     const renderedOptions = options.map((option) => {
 
@@ -18,14 +35,18 @@ const Dropdown = ({selected, onSelectedChange, options}) => {
         )
     });
 
+    console.log("B: ", ref.current);
+
     return (
-        <div className={"ui form"}>
+        <div ref={ref} className={"ui form"}>
             <div className={"field"}>
                 <label className={"label"}>Select a Color</label>
-                <div className={"ui selection dropdown visible active"}>
+                <div
+                    onClick={() => setOpen(!open)}
+                    className={`ui selection dropdown ${open ? 'visible active' : ''}`}>
                     <i className={"dropdown icon"}/>
                     <div className={"text"}>{selected.label}</div>
-                    <div className={"menu visible transition"}>
+                    <div className={`menu ${open ? 'visible transition' : ' '}`}>
                         {renderedOptions}
                     </div>
                 </div>
