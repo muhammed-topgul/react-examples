@@ -5,6 +5,17 @@ import {GOOGLE_TRANSLATE_API_KEY} from "../common/env";
 const Convert = ({language, text}) => {
 
     const [translated, setTranslated] = useState('');
+    const [debouncedText, setDebouncedText] = useState('');
+
+    useEffect(() => {
+        const timerId = setTimeout(() => {
+            setDebouncedText(text);
+        }, 500);
+
+        return () => {
+            clearTimeout(timerId);
+        }
+    }, [text]);
 
     useEffect(() => {
 
@@ -14,7 +25,7 @@ const Convert = ({language, text}) => {
                 {},
                 {
                     params: {
-                        q: text,
+                        q: debouncedText,
                         target: language.value,
                         key: GOOGLE_TRANSLATE_API_KEY
                     }
@@ -25,7 +36,7 @@ const Convert = ({language, text}) => {
         }
 
         doTranslation();
-    }, [language, text]);
+    }, [language, debouncedText]);
 
     return (
         <div>
