@@ -1,7 +1,13 @@
 import React, {Component} from 'react';
 
+// REDUX SETTING
+import {connect} from 'react-redux';
+
 class SongList extends Component {
     render() {
+
+        console.log(this.props.songs)
+
         return (
             <div>
                 SongList
@@ -10,4 +16,8 @@ class SongList extends Component {
     }
 }
 
-export default SongList;
+const mapStateToProps = (state) => {
+    return {songs: state.songs}
+}
+
+export default connect(mapStateToProps)(SongList);
