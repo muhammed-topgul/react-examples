@@ -1,7 +1,11 @@
 import React from 'react';
+import SongList from "./SongList";
+
+// REDUX SETTING
+import {connect} from 'react-redux';
 
 const App = () => {
-    return <div>App</div>;
+    return <div><SongList/></div>;
 }
 
-export default App;
+export default connect()(App);
