@@ -9,11 +9,19 @@ export const fetchPostsAndUsers = () => async (dispatch, getState) => {
 
     await dispatch(fetchPosts());
 
-    const uniqueUserIds = _.uniq(_.map(getState().posts, 'userId'));
+    // 1. yol
+    // const uniqueUserIds = _.uniq(_.map(getState().posts, 'userId'));
+    //
+    // // fetchUser fonksiyonunu bu methodun icinde cagirmis oldum
+    // // bu yuzden UserHeader componentinde cagirmama gerek kalmadi
+    // uniqueUserIds.forEach(id => dispatch(fetchUser(id)));
 
-    // fetchUser fonksiyonunu bu methodun icinde cagirmis oldum
-    // bu yuzden UserHeader componentinde cagirmama gerek kalmadi
-    uniqueUserIds.forEach(id => dispatch(fetchUser(id)));
+    // 2. yol
+    _.chain(getState().posts) // getState redux' ta ki tum verileri alir (redux' ta ki butun postlar)
+        .map('userId') // (donen postlari userId post seklinde map' le)
+        .uniq()// (benzersiz yap)
+        .forEach(uniqueId => dispatch(fetchUser(uniqueId))) // (benzersiz id' ler uzerinden gec ve her biri icin user bul)
+        .value() // (bunlarin calismasi icin gerekli trigger)
 }
 
 export const fetchPosts = () => async (dispatch) => {
