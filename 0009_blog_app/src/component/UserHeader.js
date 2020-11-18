@@ -10,7 +10,10 @@ class UserHeader extends Component {
 
     render() {
 
-        const user = this.props.users.find((user) => user.id === this.props.userId);
+        // bu kodu mapStateToProps methodunun icinde de yazabilirim
+        // const user = this.props.users.find((user) => user.id === this.props.userId);
+
+        const user = this.props.user;
 
         if (!user) {
             return null;
@@ -24,9 +27,10 @@ class UserHeader extends Component {
     }
 }
 
-const mapStateToProps = (state) => {
+// bu fonksiyonun ikinci parametresi this.props' u ifade eder
+const mapStateToProps = (state, thisProps) => {
     return {
-        users: state.users
+        user: state.users.find((user) => user.id === thisProps.userId)
     }
 }
 
