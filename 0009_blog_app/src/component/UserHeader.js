@@ -5,7 +5,7 @@ import {fetchUser} from "../action";
 class UserHeader extends Component {
 
     componentDidMount() {
-        this.props.fetchUser(this.props.userId);
+       // this.props.fetchUser(this.props.userId);
     }
 
     render() {
@@ -34,4 +34,4 @@ const mapStateToProps = (state, thisProps) => {
     }
 }
 
-export default connect(mapStateToProps, {fetchUser})(UserHeader);
+export default connect(mapStateToProps)(UserHeader);
