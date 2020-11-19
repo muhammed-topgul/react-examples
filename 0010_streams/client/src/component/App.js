@@ -1,15 +1,27 @@
 import React from 'react';
 
 // REACT ROUTER DOM SETTINGS
-import {BrowserRouter, Route} from "react-router-dom";
+import {BrowserRouter, Route, Link} from "react-router-dom";
 
 const PageOne = () => {
-    return <div>Page One</div>
+    return (
+        <div>
+            Page One
+            <br/>
+            <Link to={'/page-two'}>Navigate to Page Two</Link>
+        </div>
+    );
 }
 
 
 const PageTwo = () => {
-    return <div>Page Two</div>
+    return (
+        <div>
+            Page Two
+            <br/>
+            <Link to={'/'}>Navigate to Page One</Link>
+        </div>
+    );
 }
 
 const App = () => {
