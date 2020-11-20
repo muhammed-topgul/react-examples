@@ -1,7 +1,7 @@
 import React from 'react';
 
 // REACT ROUTER DOM SETTINGS
-import {BrowserRouter, Route, Link} from "react-router-dom";
+import {BrowserRouter, Route} from "react-router-dom";
 
 // STREAM COMPONENTS
 import StreamList from "./stream/StreamList";
