@@ -18,7 +18,17 @@ class GoogleAuth extends Component {
                 this.setState({
                     isSignedIn: this.auth.isSignedIn.get()
                 });
+
+                // bu bir listener fonksiyon
+                // auth durumu her degistiginde calisir
+                this.auth.isSignedIn.listen(this.onAuthChange);
             });
+        });
+    }
+
+    onAuthChange = () => {
+        this.setState({
+            isSignedIn: this.auth.isSignedIn.get()
         });
     }
 
