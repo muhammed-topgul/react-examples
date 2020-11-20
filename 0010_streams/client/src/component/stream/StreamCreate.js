@@ -13,14 +13,29 @@ class StreamCreate extends Component {
     //     )
     // }
 
-    renderInput({input, label, meta}) {
+    renderInput = ({input, label, meta}) => {
         return (
-            <div className={'field'}>
+            <div className={`field ${meta.error && meta.touched ? 'error' : ''}`}>
                 <label>{label}</label>
-                <input {...input}/>
-                <div>{meta.error}</div>
+                <input {...input} autoComplete={'off'}/>
+                {this.renderError(meta)}
             </div>
         );
+    }
+
+    renderError({error, touched}) {
+        // touched, kullanici eger input alaniyla etkilesime gecerse calisir
+        // yani kullanici input alanina tikladi sonra bos birakip cikti
+        // o zaman hata touched = true olur
+        // bu ayarlama form yuklendiginde ekranda hatalar gozukmesin diye
+        // UX baby :)
+        if (touched && error) {
+            return (
+                <div className={'ui error message'}>
+                    <div className={'header'}>{error}</div>
+                </div>
+            )
+        }
     }
 
     onFormSubmit(formValues) {
@@ -30,7 +45,7 @@ class StreamCreate extends Component {
     render() {
         return (
             <form
-                className={'ui form'}
+                className={'ui form error'}
                 onSubmit={this.props.handleSubmit(this.onFormSubmit)}>
                 <Field
                     name={'title'}
@@ -52,7 +67,7 @@ class StreamCreate extends Component {
 const validate = (formValues) => {
     const errors = {};
 
-    if (!formValues.title) {
+    if (!formValues.title || formValues.title.length < 5) {
         errors.title = 'You must enter a title';
     }
 
