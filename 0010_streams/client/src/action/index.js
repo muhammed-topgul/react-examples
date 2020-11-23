@@ -1,4 +1,4 @@
-import {SIGN_IN, SIGN_OUT} from "../common/env";
+import {CREATE_STREAM, SIGN_IN, SIGN_OUT} from "../common/env";
 import streams from "../service/streams";
 
 export const signIn = (userId) => {
@@ -15,5 +15,10 @@ export const signOut = () => {
 }
 
 export const createStream = (formValues) => async dispatch => {
-    streams.post('/streams', formValues);
+    const response = await streams.post('/streams', formValues);
+
+    dispatch({
+        type: CREATE_STREAM,
+        payload: response.data
+    });
 }
