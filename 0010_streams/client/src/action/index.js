@@ -14,8 +14,11 @@ export const signOut = () => {
     }
 }
 
-export const createStream = (formValues) => async dispatch => {
-    const response = await streams.post('/streams', formValues);
+export const createStream = (formValues) => async (dispatch, getState) => {
+    // getState redux' ta ki butun verileri alir
+    const {userId} = getState().auth;
+    // formValues' e userId elementini mergeledim
+    const response = await streams.post('/streams', {...formValues, userId});
 
     dispatch({
         type: CREATE_STREAM,
@@ -27,8 +30,8 @@ export const fetchStreams = () => async dispatch => {
     const response = await streams.get('/streams');
 
     dispatch({
-       type: FETCH_STREAMS,
-       payload: response.data
+        type: FETCH_STREAMS,
+        payload: response.data
     });
 }
 
@@ -36,8 +39,8 @@ export const fetchStream = (id) => async dispatch => {
     const response = await streams.get(`/streams/${id}`);
 
     dispatch({
-       type: FETCH_STREAM,
-       payload: response.data
+        type: FETCH_STREAM,
+        payload: response.data
     });
 }
 
@@ -45,8 +48,8 @@ export const editStream = (id, formValues) => async dispatch => {
     const response = await streams.put(`/streams/${id}`, formValues);
 
     dispatch({
-       type: EDIT_STREAM,
-       payload: response.data
+        type: EDIT_STREAM,
+        payload: response.data
     });
 }
 
@@ -54,7 +57,7 @@ export const deleteStream = (id) => async dispatch => {
     const response = await streams.delete(`/streams/${id}`);
 
     dispatch({
-       DELETE_STREAM,
+        DELETE_STREAM,
         payload: response.data
     });
 }
