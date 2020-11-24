@@ -1,5 +1,6 @@
 import {CREATE_STREAM, EDIT_STREAM, FETCH_STREAM, FETCH_STREAMS, DELETE_STREAM, SIGN_IN, SIGN_OUT} from "../common/env";
 import streams from "../service/streams";
+import history from "../common/history";
 
 export const signIn = (userId) => {
     return {
@@ -24,6 +25,8 @@ export const createStream = (formValues) => async (dispatch, getState) => {
         type: CREATE_STREAM,
         payload: response.data
     });
+
+    history.push('/')
 }
 
 export const fetchStreams = () => async dispatch => {
